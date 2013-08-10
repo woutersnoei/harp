@@ -19,7 +19,8 @@
 	\amp, 0.1, \amp.asSpec,
 	\avgTime, 10, [1, 30, \lin, 1 ].asSpec,
 	\filter, 0.5, [0,1].asSpec,
-	\transp, [-2, 9], [-24,24,\lin,1].asSpec.asRangeSpec
+	\transp, [-2, 9], [-24,24,\lin,1].asSpec.asRangeSpec,
+	\shiftAmt, 0, [0,400,\lin].asSpec,
 ].clump(3).do({ |item|
 	var key, default, spec;
 	#key, default, spec = item;
@@ -32,7 +33,8 @@
 });
 
 (
-SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5, transp = #[-2,9] |
+SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5, transp = #[-2,9],
+		shiftAmt = 0|
 	var trigger;
 	var sigs;
 	var bufs, n = 10;
@@ -42,12 +44,13 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 	filter = filter.lag(1);
 	trigger = TDuty.kr( Dwhite(avgTime/2, avgTime*2) );
 	sigs =  PlayBuf.ar( 1, bufs, 
-			TIRand.kr( -4.dup(bufs.size), 4, trigger )
+			TIRand.kr( -4.dup( n ), 4, trigger )
 			.round.midiratio * (
 				TIRand.kr( transp[0].dup( n ), transp[1], trigger ).midiratio *
 				TWChoose.kr( trigger, [-1,1],[0.1,0.9] )
 			),
 		startPos: Rand(0, BufFrames.kr(bufs)), loop: true );
+	sigs = FreqShift.ar( sigs, LFDNoise3.kr(0.026.dup( n )) * shiftAmt );
 	sigs = BLowCut.ar(sigs, 
 		LFDNoise3.kr(0.2.dup(sigs.size)).exprange( 20, filter.linexp(0,1,20,20000) ), 
 		3 
@@ -65,13 +68,14 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 
 
 ~harp.tremolo.start = { |evt|
-	~harp.tremolo.end;
+	evt.end;
 	evt.sn = Synth( "harp_crawling_10", [ 
 		\bufs, (evt.buffers!2).flatten(1), 
 		\amp, evt.amp ? 0.1,
 		\filter, evt.filter ? 0.5,
 		\avgTine, evt.avgTime ? 10,
-		\transp, evt.transp ? [-2, 9]
+		\transp, evt.transp ? [-2, 9],
+		\shiftAmt, evt.shiftAmt ? 0,
 	] );
 };
 
@@ -86,12 +90,20 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 ~harp.tremolo.start;
  
 ~harp.tremolo.amp = 0.1;
-~harp.tremolo.filter = 0.4;
+~harp.tremolo.filter = 1;
+~harp.tremolo.filter = 0.9;
+~harp.tremolo.filter = 0.7;
+~harp.tremolo.filter = 0.5;
 ~harp.tremolo.transp = [-12,3];
 ~harp.tremolo.transp = [-24,24];
 ~harp.tremolo.transp = [-12,0];
+~harp.tremolo.transp = [12,24];
 ~harp.tremolo.transp = [-2,9];
 ~harp.tremolo.avgTime = 5;
+
+~harp.tremolo.shiftAmt = 0;
+~harp.tremolo.shiftAmt = 200;
+~harp.tremolo.shiftAmt = 400;
 
 */
 
