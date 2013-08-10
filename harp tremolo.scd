@@ -4,7 +4,7 @@
 
 ~harp.tremolo.loadBuffers = { |evt, action|
 	evt.buffers = Buffer.readDir(
-		thisProcess.nowExecutingPath.dirname +/+ "samples/tremolo", 
+		thisProcess.nowExecutingPath.dirname.dirname +/+ "samples/tremolo", 
 		nil, "aif", action: action
 	);
 };
