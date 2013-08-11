@@ -2,16 +2,7 @@
 
 ~harp.tremolo = ~harp.tremolo ? EM();
 
-~harp.tremolo.loadBuffers = { |evt, action|
-	evt.buffers = Buffer.readDir(
-		thisProcess.nowExecutingPath.dirname.dirname +/+ "samples/tremolo", 
-		nil, "aif", action: action
-	);
-};
-
-/*
-~harp.tremolo.loadBuffers
-*/
+~harp.tremolo.parent = ~harp;
 
 ~harp.tremolo.specs = EM();
 
@@ -70,7 +61,7 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 ~harp.tremolo.start = { |evt|
 	evt.end;
 	evt.sn = Synth( "harp_crawling_10", [ 
-		\bufs, (evt.buffers!2).flatten(1), 
+		\bufs, (evt.buffers.tremolo!2).flatten(1), 
 		\amp, evt.amp ? 0.1,
 		\filter, evt.filter ? 0.5,
 		\avgTine, evt.avgTime ? 10,
@@ -88,7 +79,9 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 /*
 
 ~harp.tremolo.start;
- 
+
+~harp.tremolo.end;
+
 ~harp.tremolo.amp = 0.1;
 ~harp.tremolo.filter = 1;
 ~harp.tremolo.filter = 0.9;

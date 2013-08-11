@@ -2,16 +2,7 @@
 
 ~harp.chord = ~harp.chord ? EM();
 
-~harp.chord.loadBuffers = { |evt, action|
-	evt.buffers = Buffer.readDir(
-		thisProcess.nowExecutingPath.dirname.dirname +/+ "samples/note_filt", 
-		nil, "aiff", action: action
-	);
-};
-
-/*
-~harp.chord.loadBuffers;
-*/
+~harp.chord.parent = ~harp;
 
 ~harp.chord.specs = EM();
 
@@ -58,7 +49,7 @@ SynthDef( "harp_alt", { |bufnum = 0, min = 0.25, max = 0.75, rate = 1, transp = 
 	evt.end;
 	evt.synths = ((-17..17).scramble[..9]).sort.collect({ |i|
 		Synth("harp_alt", [ 
-			\bufnum, evt.buffers.wrapAt(i), 
+			\bufnum, evt.buffers.note_filt.wrapAt(i), 
 			\amp, evt.amp ? 0.1, 
 			\transp, evt.transp ? 0,
 			\rate, i.midiratio
