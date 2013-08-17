@@ -4,7 +4,7 @@
 
 ~harp.tremolo.parent = ~harp;
 
-~harp.tremolo.specs = EM();
+~harp.tremolo.specs = OEM();
 
 [
 	\amp, 0.1, \amp.asSpec,

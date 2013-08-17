@@ -4,7 +4,7 @@
 
 ~harp.chord.parent = ~harp;
 
-~harp.chord.specs = EM();
+~harp.chord.specs = OEM();
 
 [
 	\amp, 0.1, \amp.asSpec,
