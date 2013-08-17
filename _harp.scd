@@ -1,14 +1,21 @@
 ~harp = ~harp ? EM();
 
+~harp.path = thisProcess.nowExecutingPath.dirname;
+
+~harp.names = [ 'tremolo', 'chord' ];
+
 [
 	"samples",
 	"chord",
 	"tremolo",
+	"gui",
 ].do({ |item|
-	(thisProcess.nowExecutingPath.dirname +/+ "harp" + item ++ ".scd").load;
+	(~harp.path +/+ "harp" + item ++ ".scd").load;
 });
 
 ~harp.loadBuffers( { "loadBuffers done".postln } );
+
+~harp.makeWindow( );
 
 /*
 ~harp.tremolo.start;
