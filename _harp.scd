@@ -7,6 +7,7 @@
 ([
 	"samples",
 ] ++ ~harp.names ++ [
+	"inputRouter",
 	"gui",
 	"nanoKontrol",
 ]).do({ |item|
