@@ -2,15 +2,14 @@
 
 ~harp.path = thisProcess.nowExecutingPath.dirname;
 
-~harp.names = [ 'tremolo', 'chord' ];
+~harp.names = [ 'tremolo', 'chord', 'schuif' ];
 
-[
+([
 	"samples",
-	"chord",
-	"tremolo",
+] ++ ~harp.names ++ [
 	"gui",
 	"nanoKontrol",
-].do({ |item|
+]).do({ |item|
 	(~harp.path +/+ "harp" + item ++ ".scd").load;
 });
 

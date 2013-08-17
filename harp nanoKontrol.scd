@@ -34,6 +34,13 @@ format:
 		slider: \amp,
 		knob: \transp
 	),
+	(
+		name: \schuif,
+		index: 2,
+		power: true,
+		slider: \amp,
+		knob: \ratio
+	),
 	]
 );
 
