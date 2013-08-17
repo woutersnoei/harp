@@ -54,12 +54,14 @@ SynthDef( "harp_alt", { |bufnum = 0, min = 0.25, max = 0.75, rate = 1, transp = 
 			\transp, evt.transp ? 0,
 			\rate, i.midiratio
 		] );
-	})
+	});
+	evt.active = true;
 };
 
 ~harp.chord.end = { |evt|
 	evt.synths.do(_.release);
 	evt.synths = nil;
+	evt.active = false;
 };
 
 /*

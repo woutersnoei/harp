@@ -68,11 +68,13 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 		\transp, evt.transp ? [-2, 9],
 		\shiftAmt, evt.shiftAmt ? 0,
 	] );
+	evt.active = true;
 };
 
 ~harp.tremolo.end = { |evt|
 	evt.sn.release;
 	evt.sn = nil;
+	evt.active = false;
 };
 
 
