@@ -87,7 +87,14 @@
 	});
 	evt.changed( \active );
 	if( specs.notNil ) {
-		RoundView.pushSkin( ( labelWidth: 50, font:  Font( "Arial", 9 ) ) );
+		RoundView.pushSkin( ( 
+			labelWidth: 50, 
+			font:  Font( "Arial", 9 ),  
+			baseWidth: 0.9, 
+			hiliteColor: Color.gray(0.2).alpha_(0.25),
+			knobSize: 0.5,
+			knobColor: Color.black.alpha_(0.25)
+		) );
 		evt.specs.keysValuesDo({ |key, spec|
 			var view;
 			view = spec.makeView(  evt.composite, width @ 14, key.asString, { |sl, val|
