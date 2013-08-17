@@ -1,12 +1,10 @@
 ~harp = ~harp ? EM();
 
-~harp.parentEvent = EM();
-
-~harp.parentEvent.mapSet = { |evt, what, value| 
+~harp.mapSet = { |evt, what, value| 
 	evt.perform( what.asSymbol.asSetter, evt.specs[ what.asSymbol.asGetter ].asSpec.map(value) );
 };
 
-~harp.parentEvent.mapGet = { |evt, what, value| 
+~harp.mapGet = { |evt, what, value| 
 	evt.specs[ what.asSymbol.asGetter ].asSpec.unmap( evt.perform( what.asSymbol.asGetter ) );
 };
 

@@ -9,6 +9,7 @@
 	"chord",
 	"tremolo",
 	"gui",
+	"nanoKontrol",
 ].do({ |item|
 	(~harp.path +/+ "harp" + item ++ ".scd").load;
 });
@@ -16,6 +17,8 @@
 ~harp.loadBuffers( { "loadBuffers done".postln } );
 
 ~harp.makeWindow( );
+
+~harp.nanoKONTROL.fillGUI;
 
 /*
 ~harp.tremolo.start;
