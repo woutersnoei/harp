@@ -12,6 +12,8 @@
 	\in, 0, [0,2,\lin,1].asSpec,
 	\amp, 0.1, \amp.asSpec,
 	\dev, 1, [0,1].asSpec,
+	\down, 0, [ 0, 0.75 ].asSpec,
+	\winsize, 0.5, [0.01,0.5,\exp].asSpec,
 	\thresh, -10, [-inf, 0, \db].asSpec,
 ].clump(3).do({ |item|
 	var key, default, spec;
@@ -26,7 +28,8 @@
 });
 
 (
-SynthDef( "harp_live_holdpeak", { |in = 0, amp = 0.1, dev = 1, thresh = -10, loopbuf = 0, gate = 1|
+SynthDef( "harp_live_holdpeak", { |in = 0, amp = 0.1, dev = 1, thresh = -10, down = 0, loopbuf = 0, 
+	winsize = 0.5, gate = 1|
 	var pos, sig, rec;
 	var loopsig, sg;
 	
@@ -49,7 +52,7 @@ SynthDef( "harp_live_holdpeak", { |in = 0, amp = 0.1, dev = 1, thresh = -10, loo
 	loopsig = SplayAz.ar( 4, loopsig );
 	loopsig = sig + ( (1-rec) * loopsig );
 
-	sg = PitchShift.ar( loopsig * amp, 0.5.dup(4), 1, 0.01 * dev, 0.5 * dev ) * 2;
+	sg = PitchShift.ar( loopsig * amp, winsize.dup(4), 1-down, (0.01 + down) * dev, 0.5 * dev ) * 2;
 	
 	Out.ar( 0, sg * Env.cutoff.kr(2,gate));
 }).load(s);
