@@ -2,7 +2,7 @@
 
 ~harp.path = thisProcess.nowExecutingPath.dirname;
 
-~harp.names = [ 'tremolo', 'chord', 'schuif', 'live_squeek' ];
+~harp.names = [ 'tremolo', 'chord', 'schuif', 'live_squeek', 'live_echos', 'live_holdpeak' ];
 
 ([
 	"samples",
