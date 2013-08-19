@@ -8,13 +8,17 @@
 	"samples",
 ] ++ ~harp.names ++ [
 	"inputRouter",
+	"verb",
 	"gui",
 	"nanoKontrol",
 ]).do({ |item|
 	(~harp.path +/+ "harp" + item ++ ".scd").load;
 });
 
-~harp.loadBuffers( { "loadBuffers done".postln } );
+~harp.loadBuffers( { 
+	"loadBuffers done".postln; 
+	q.verb.prepare({ q.verb.views.power.valueAction = 1; }); 
+} );
 
 ~harp.makeWindow( );
 
