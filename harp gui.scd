@@ -18,7 +18,14 @@
 	evt = ev[ which ];
 	specs = evt !? _.specs;
 	evt.composite = EZCompositeView( parent, (width+8)@( ev.getWindowHeightFor( which ) ) );
-	evt.composite.view.background = Gradient( Color.gray(0.8), Color.gray(0.9), \v ) ;
+	if( which.asString[..4] == "live_" ) {
+		evt.composite.view.background = Gradient( 
+			Color.blue(0.7).blend( Color.gray(0.8), 0.8 ), 
+			Color.gray(0.9), \v 
+		);
+	} {
+		evt.composite.view.background = Gradient( Color.gray(0.8), Color.gray(0.9), \v );
+	};
 	ctrl = SimpleController( evt );
 	evt.composite.onClose = { ctrl.remove };
 	evt.views = ();
@@ -35,7 +42,7 @@
 				);
 			})
 			.resize_(2);
-	evt.views[ \label ] = StaticText( evt.composite, (width - 150) @ 14 )
+	evt.views[ \label ] = StaticText( evt.composite, (width - 140) @ 14 )
 		.string_( which.asString )
 		.font_( Font( "Helvetica-Bold", 10 ) );
 	if( evt.keys.asArray.includes( \getPreset ) ) {
@@ -43,7 +50,7 @@
 			evt.views[ \presets ].items = [ "presets", "" ] ++ evt.presetNames ++ 
 				[ "", "save", "revert", "add..", "remove.." ];
 		};
-		evt.views[ \presets ] = PopUpMenu( evt.composite, 116 @ 14 )
+		evt.views[ \presets ] = PopUpMenu( evt.composite, 108 @ 14 )
 			.action_({ |pu|
 				case { pu.item.isKindOf( Symbol ) } {
 					evt.applyPreset( pu.item );
@@ -73,7 +80,7 @@
 			}).font_( Font( "Helvetica", 10 ) );
 		evt.views.fillPresets;
 	} {
-		evt.composite.decorator.shift(120,0);
+		evt.composite.decorator.shift(112,0);
 	};
 	evt.views[ \file ] = SmoothButton( evt.composite, 14 @ 14 )
 		.border_(1)

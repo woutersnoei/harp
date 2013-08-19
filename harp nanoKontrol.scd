@@ -128,6 +128,9 @@ format:
 					};
 				};
 			});
+			if( item.power == true ) {
+				evt[ item.name ].views.label.string = "% (%)".format( item.name, item.index+1 );
+			};
 		});
 	};
 };
