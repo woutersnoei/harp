@@ -80,7 +80,7 @@
 		.background_( Gradient( Color.gray(1), Color.gray(0.8), \v ) )
 		.radius_(2)
 		.label_( 'document' )
-		.action_({ Document.open( ev.path +/+ "harp" + which ++ ".scd" ) })
+		.action_({ ( ev.path +/+ "harp" + which ++ ".scd" ).openDocument })
 		.resize_(2);
 	ctrl.put( \active, {
 		evt.views[ \power ].value = (evt.active == true).binaryValue;
