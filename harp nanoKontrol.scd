@@ -42,22 +42,43 @@ format:
 		knob: \ratio
 	),
 	(
-		name: \live_squeek,
+		name: \fast_fx,
 		index: 3,
+		power: true,
+		slider: \amp,
+		knob: \filter
+	),
+	(
+		name: \drone,
+		index: 4,
+		power: true,
+		slider: \amp,
+		knob: \filter
+	),
+	(
+		name: \clicks,
+		index: 5,
+		power: true,
+		slider: \amp,
+		knob: \ratio
+	),
+	(
+		name: \live_squeek,
+		index: 6,
 		power: true,
 		slider: \amp,
 		knob: \lag
 	),
 	(
 		name: \live_echos,
-		index: 4,
+		index: 7,
 		power: true,
 		slider: \amp,
 		knob: \maxShift
 	),
 	(
 		name: \live_holdpeak,
-		index: 5,
+		index: 8,
 		power: true,
 		slider: \amp,
 		knob: \dev
