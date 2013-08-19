@@ -4,6 +4,29 @@
 
 ~harp.nanoKONTROL.parent = ~harp;
 
+~harp.lastValueDict = EM();
+
+~harp.mapCatchSet = { |evt, key = \amp, value = 0|
+	var current, last;
+	current = evt.mapGet( key );
+	last = evt.lastValueDict[ evt.getParentKey ] !? _[ key ];
+	if( last.notNil ) {
+		evt.mapSet( key, value );
+	} {
+		if( value.equalWithPrecision( current, 0.1 ) ) {
+			evt.mapSet( key, value );
+			evt.lastValueDict[ evt.getParentKey ] = (evt.lastValueDict[ evt.getParentKey ] ? EM())
+				.put( key, value )
+		};
+	};
+};
+
+~harp.getParentKey = { |evt|
+	evt.parent !? { |parent|
+		parent.findKeyForValue( evt );
+	};
+};
+
 /*
 format:
 
@@ -25,6 +48,7 @@ format:
 		index: 0,
 		power: true,
 		slider: \amp,
+		shift_slider: \shiftAmt,
 		knob: \filter
 	),
 	(
@@ -86,7 +110,7 @@ format:
 	]
 );
 
-~harp.nanoKONTROL.apply = { |evt, index = 0, type = \upper, value = 0|
+~harp.nanoKONTROL.apply = { |evt, index = 0, type = \upper, value = 0, shift = false|
 	evt.routing.do({ |item|
 		if( item.index == index ) {
 			switch( type, 
@@ -105,10 +129,11 @@ format:
 					};			
 				}
 			);
+			if( shift ) { type = ("shift_" ++ type).asSymbol };
 			if( item[ type ].notNil ) {
 				switch( item[ type ].class,
 					Function, { item[ type ].value( value ) },
-					Symbol, { evt[ item.name ].mapSet( item[ type ], value ); },
+					Symbol, { evt[ item.name ].mapCatchSet( item[ type ], value ); },
 				);
 			};
 		};
@@ -117,18 +142,21 @@ format:
 
 ~harp.nanoKONTROL.activate = { |evt, scene = 0|
 	NanoKONTROL();
+	NanoKONTROL.buttons[scene][23].action = { 
+		~harp.lastValueDict = EM();
+	};
 	9.do({ |i|
 		NanoKONTROL.sliders[ scene ][ i ].action = { |sl|
-			evt.apply( i, \slider, sl.value );
+			evt.apply( i, \slider, sl.value, NanoKONTROL.buttons[0][23].value == 1 );
 		};
 		NanoKONTROL.knobs[ scene ][ i ].action = { |sl|
-			evt.apply( i, \knob, sl.value );
+			evt.apply( i, \knob, sl.value, NanoKONTROL.buttons[0][23].value == 1 );
 		};
 		NanoKONTROL.buttons[ scene ][ i ].action = { |sl|
-			evt.apply( i, \upper, sl.value );
+			evt.apply( i, \upper, sl.value, NanoKONTROL.buttons[0][23].value == 1 );
 		};
 		NanoKONTROL.buttons[ scene ][ i+9 ].action = { |sl|
-			evt.apply( i, \lower, sl.value );
+			evt.apply( i, \lower, sl.value, NanoKONTROL.buttons[0][23].value == 1 );
 		};
 	});
 };
