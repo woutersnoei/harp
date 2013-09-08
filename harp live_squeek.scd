@@ -8,7 +8,7 @@
 ~harp.live_squeek.controlNames = [];
 
 [
-	\in, 0, [0,2,\lin,1].asSpec,
+	\in, 2, [0,3,\lin,1].asSpec,
 	\amp, 0.1, \amp.asSpec,
 	\pwidth, 0.25, [0.25, 1].asSpec, 
 	\lag, 0, [0,1].asSpec,

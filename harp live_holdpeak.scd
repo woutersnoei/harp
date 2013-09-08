@@ -9,7 +9,7 @@
 ~harp.live_holdpeak.controlNames = [];
 
 [
-	\in, 0, [0,2,\lin,1].asSpec,
+	\in, 2, [0,3,\lin,1].asSpec,
 	\amp, 0.1, \amp.asSpec,
 	\dev, 1, [0,1].asSpec,
 	\down, 0, [ 0, 0.75 ].asSpec,
