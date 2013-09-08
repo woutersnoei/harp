@@ -5,7 +5,7 @@
 (
 ~harp.names = [ 
 	'tremolo', 'chord', 'schuif', 'fast_fx', 'drone', 'clicks',
-	'live_squeek', 'live_echos', 'live_holdpeak' 
+	'live_squeek', 'live_echos', 'live_holdpeak', 'live_sample'
 ];
 );
 
