@@ -59,7 +59,7 @@ SynthDef( "harp_live_squeek", { |in = 0, amp = 0.5, pwidth = 0.25, lag = 0, spee
 
 ~harp.live_squeek.start = { |evt|
 	evt.end;
-	evt.sn = Synth( "harp_live_squeek", evt.getPairs( evt.controlNames ) );
+	evt.sn = Synth( "harp_live_squeek", evt.getPairs( evt.controlNames ), s, \addToTail );
 	evt.active = true;
 };
 

@@ -52,7 +52,7 @@ SynthDef( "harp_live_echos", { |in = 0, amp = 0.5, pwidth = 0.25, maxShift = 10,
 
 ~harp.live_echos.start = { |evt|
 	evt.end;
-	evt.sn = Synth( "harp_live_echos", evt.getPairs( evt.controlNames ) );
+	evt.sn = Synth( "harp_live_echos", evt.getPairs( evt.controlNames ), s, \addToTail  );
 	evt.active = true;
 };
 

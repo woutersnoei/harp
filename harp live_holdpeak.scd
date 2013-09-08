@@ -60,8 +60,9 @@ SynthDef( "harp_live_holdpeak", { |in = 0, amp = 0.1, dev = 1, thresh = -10, dow
 
 ~harp.live_holdpeak.start = { |evt|
 	evt.end;
-	evt.sn = Synth( "harp_live_holdpeak", [ \loopbuf, evt.buffers.holdpeak.postln ] ++
-		evt.getPairs( evt.controlNames ) 
+	evt.sn = Synth( "harp_live_holdpeak", [ \loopbuf, evt.buffers.holdpeak ] ++
+		evt.getPairs( evt.controlNames ),
+		s, \addToTail 
 	);
 	evt.active = true;
 };
