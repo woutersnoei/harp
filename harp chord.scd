@@ -38,7 +38,7 @@ SynthDef( "harp_alt", { |bufnum = 0, min = 0.25, max = 0.75, rate = 1, transp = 
 	
 	change = Changed.kr( Slope.kr( sig ) > 0 );
 	sig = PlayBufAlt.ar( 2, bufnum, rate, change, lag: 0.3, n: 4 )[1];
-	sig = sig * Line.kr(1,2,9);
+	sig = sig * Line.kr(2,2,9);
 	sig = RoundPan.ar( 4, sig * amp, LFDNoise3.kr(0.1) * 2 );
 	
 	Out.ar( 0, sig * env );
