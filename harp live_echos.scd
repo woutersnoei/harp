@@ -13,6 +13,7 @@
 	\pwidth, 0.25, [0.25, 1].asSpec, 
 	\maxShift, 10, [1,1000,\exp].asSpec,
 	\speed, 1, [0.1,10,\exp].asSpec,
+	// \fb, 0, [0,0.99,\lin].asSpec,
 	\limit, 0.5, \amp.asSpec
 ].clump(3).do({ |item|
 	var key, default, spec;
@@ -36,10 +37,14 @@ SynthDef( "harp_live_echos", { |in = 0, amp = 0.5, pwidth = 0.25, maxShift = 10,
 		
 		sig = PrivateIn.ar( in ) * level.lag(0.5) * 2;
 		
+		//sig = sig + (LeakDC.ar( LocalIn.ar( 4 ) ) * fb);
+		
 		sig = DelayC.ar( sig, 1, LFDNoise3.kr(0.1.dup(n) * speed).range(0.125,1) ) ++
 			DelayC.ar( sig, 2, LFDNoise3.kr(0.01.dup(n) * speed).range(0.5,2) );
 		
 		sig = FreqShift.ar( sig, Rand(0.dup(n*2),1) * maxShift);
+		
+		// LocalOut.ar( sig );
 		
 		sig = sig.collect({ |sig|
 			RoundPan.ar( 4, sig, LFNoise2.kr(0.5) * pwidth );
