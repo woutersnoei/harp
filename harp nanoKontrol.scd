@@ -43,6 +43,7 @@ format:
 
 (
 ~harp.nanoKONTROL.routing = [ 
+	/*
 	(
 		name: \tremolo,
 		index: 0,
@@ -57,6 +58,15 @@ format:
 		power: true,
 		slider: \amp,
 		knob: \transp
+	),
+	*/
+	(
+		name: \hamel,
+		index: 0,
+		power: true,
+		slider: \amp,
+		shift_slider: \shiftAmt,
+		knob: \filter
 	),
 	(
 		name: \schuif,
