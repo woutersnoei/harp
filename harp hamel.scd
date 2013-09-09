@@ -50,8 +50,11 @@ SynthDef( "harp_crawling_2", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5,
 		LFDNoise3.kr(0.2.dup(sigs.size)).exprange( (1-filter).linexp(0,1,20,20000), 20000 ), 
 		3 
 	 );
+	 
+	PrivateOut.ar(4, (sigs.sum / n) * amp * env );
+	
 	sigs = sigs.collect({ |sig|
-		RoundPan.ar( 2, sig, LFDNoise3.kr(0.05) * 2 );
+		RoundPan.ar( 4, sig, LFDNoise3.kr(0.05) * 2 );
 	}).sum;
 	Out.ar(0, sigs * amp * env );
 }).load(s);

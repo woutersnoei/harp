@@ -25,6 +25,8 @@ SynthDef( "harp_schuif", { |bufnum = #[0,1], gate = 1,
 		.clip(20,20000), 4);
 	sig = BHiCut.ar( sig, LFDNoise3.kr( modSpeed ).exprange( *hiCut.lag(0.25) )
 		.clip(20,20000), 4);
+		
+	PrivateOut.ar(4, (sig.sum / 2) * amp * env );
 	
 	sig = sig.collect({ |sig|
 		PanAz.ar( 4, sig, LFDNoise3.kr(modSpeed) * pwidth );

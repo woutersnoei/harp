@@ -38,6 +38,7 @@ SynthDef( "harp_buf_fade", { |bufnum = 0, freq = 440, amp = 0.1, durscale = 1, r
 		((freq * (1..8)) + Rand(-2.dup(8),2)).clip(20,20000), amps, res
 	], sig ) + (sig * -1)) * 0.2;
 	sig = sig * env * amp * 2;
+	PrivateOut.ar(4, sig );
 	sig = RoundPan.ar(4, sig, pan );
 	Out.ar( 0, sig );
 }).load(s);

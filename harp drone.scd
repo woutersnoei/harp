@@ -38,7 +38,9 @@ SynthDef( "harp_drone", { |bufnum = 0, amp = 0.1, ratio = 1, fullness = 1, filte
 	filterWidth = LPFLag.kr(filterWidth,0.25);
 	sig = BLowCut.ar( sig, filter.linexp( filterWidth.linlin(0, 1, 0, 0.5 ), 1, 20, 20000 ));
 	sig = BHiCut.ar( sig, filter.linexp( 0, filterWidth.linlin(0, 1, 1, 0.5), 20, 20000 ));
-	Out.ar( 0, sig * amp.lag(0.5) * Env.cutoff.kr(2,gate) );
+	sig = sig * amp.lag(0.5) * Env.cutoff.kr(2,gate);
+	PrivateOut.ar(4, sig.sum / 4 );
+	Out.ar( 0, sig );
 }).load(s);
 );
 
