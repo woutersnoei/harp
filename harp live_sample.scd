@@ -16,6 +16,9 @@
 [
 	\in, 2, [0,2,\lin,1].asSpec,
 	\catch, false, BoolSpec(false), 
+	\semitones, 0, [-12,12,\lin,1].asSpec,
+	\catch2, false, BoolSpec(false), 
+	\semitones2, 0, [-12,12,\lin,1].asSpec,
 	\duration, 2, [0.5,4,\lin].asSpec,
 	\amp, 0.0, \amp.asSpec,
 	\pwidth, 0.25, [0.25, 1].asSpec,
@@ -37,8 +40,15 @@
 	evt.sn.set( \catch, evt[ \catch ] );
 };
 
-~harp.live_sample.sendTrig = { |evt|
-	evt.sn.set( \t_getPos, 1 );
+~harp.live_sample[ \catch2_ ] = { |evt, value|
+	evt[ \catch2 ] = value ? false;
+	if( evt[ \catch2 ].booleanValue == true ) { evt.sendTrig(2); };
+	evt.sn.set( \catch2, evt[ \catch2 ] );
+};
+
+
+~harp.live_sample.sendTrig = { |evt, id = 1|
+	evt.sn.set( \t_getPos, id );
 };
 
 ~harp.live_sample.copyLoop = { |evt, value = 0|
@@ -51,10 +61,21 @@
 	});
 };
 
+
+~harp.live_sample.copyLoop2 = { |evt, value = 0|
+	evt.loopBuf2.free;
+	evt.loopBuf2 = Buffer.alloc( s, evt.duration * 44100, 1, {|buf|["/b_query",buf.bufnum]} );
+	evt.sn.set( \loopBuf2, evt.loopBuf2 );
+	evt.loopBuf2.doOnInfo_({
+		evt.recBuf.copyLoopCF( evt.loopBuf, value - ((evt.duration + 0.125) * 44100), 0.125, 
+		-1, { "copied loop 2".postln });
+	});
+};
+
 (
 SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, gate = 1,
-		recBuf = 0, loopBuf = 0, t_getPos = 0, level = 1|
-		var sig, playLoop;
+		recBuf = 0, semitones = 0, loopBuf = 0, semitones2 = 0, catch2 = 0, loopBuf2 = 0, t_getPos = 0, level = 1|
+		var sig, playLoop, playLoop2;
 		var env;
 		
 		env = Env.asr(0.1,1,0.25).kr(2,gate);
@@ -63,14 +84,21 @@ SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, ga
 		
 		RecordBuf.ar( sig, recBuf );
 		
-		SendTrig.kr( t_getPos, 0, Phasor.ar( 0, 1, 0, BufFrames.kr(recBuf) ) );
+		SendTrig.kr( t_getPos, t_getPos, Phasor.ar( 0, 1, 0, BufFrames.kr(recBuf) ) );
 		
-		playLoop = PlayBufCF.ar( 1, loopBuf, 1, 
+		playLoop = PlayBufCF.ar( 1, loopBuf, semitones.midiratio, 
 			Dwhite(0.5,2), Dwhite(0,BufFrames.kr( loopBuf )), 1, 0.25 
 		);
 		
 		catch = Slew.kr( Slew.kr( catch, 1/0.25, inf ) > 0.9999, 1/0.25, 1/0.25 ).linlin(0,1,-1,1);
-		sig = XFade2.ar( sig, playLoop, catch );
+		
+		playLoop2 = PlayBufCF.ar( 1, loopBuf2, semitones2, 
+			Dwhite(0.5,2), Dwhite(0,BufFrames.kr( loopBuf2 )), 1, 0.25 
+		);
+		
+		catch2 = Slew.kr( Slew.kr( catch2, 1/0.25, inf ) > 0.9999, 1/0.25, 1/0.25 );
+		
+		sig = XFade2.ar( sig, playLoop, catch ) + (catch2 * playLoop2);
 		
 		PrivateOut.ar( 3, sig );
 		
@@ -87,9 +115,9 @@ SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, ga
 		evt.getPairs( evt.controlNames ++ [ \recBuf, \catchBuf ]), 
 		s, \addToHead 
 	).register;
-	ReceiveTrig( evt.sn, { |value|
+	ReceiveTrig( evt.sn, { |value, time, responder, msg|
 		value.postln;
-		evt.copyLoop( value );
+		if( msg[2] == 1 ) { evt.copyLoop( value ); } { evt.copyLoop2( value ) };
 	});
 	evt.active = true;
 };
