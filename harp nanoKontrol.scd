@@ -61,8 +61,14 @@ format:
 	),
 	*/
 	(
-		name: \hamel,
+		name: \plong,
 		index: 0,
+		power: true,
+		slider: \amp
+	),
+	(
+		name: \hamel,
+		index: 1,
 		power: true,
 		slider: \amp,
 		shift_slider: \shiftAmt,

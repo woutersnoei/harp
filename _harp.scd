@@ -4,7 +4,7 @@
 
 (
 ~harp.names = [ 
-	'hamel', 'schuif', 'fast_fx', 'drone', 'clicks',
+	'plong', 'hamel', 'schuif', 'fast_fx', 'drone', 'clicks',
 	'live_squeek', 'live_echos', 'live_holdpeak', 'live_sample', 'panfocus'
 ];
 );
