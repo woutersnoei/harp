@@ -84,16 +84,56 @@ format:
 	(
 		name: \fast_fx,
 		index: 3,
-		power: true,
+		autopower: true,
 		slider: \amp,
-		knob: \filter
+		knob: \filter,
+		upper: { |value|
+			// toggle filterWidth
+			if( value == 1 ) {
+				if( ~harp.fast_fx.filterWidth < 1 ) { 
+					~harp.fast_fx.filterWidth = 1 
+				} {
+					~harp.fast_fx.filterWidth = 0.5
+				};
+			};
+		},
+		lower: { |value|
+			// toggle moddepth
+			if( value == 1 ) {
+				if( ~harp.fast_fx.moddepth < 1 ) { 
+					~harp.fast_fx.moddepth = 1;
+				} {
+					~harp.fast_fx.moddepth = 0;
+				};
+			};
+		}
 	),
 	(
 		name: \drone,
 		index: 4,
-		power: true,
+		autopower: true,
 		slider: \amp,
-		knob: \filter
+		knob: \filter,
+		upper: { |value|
+			if( value == 1 ) {
+				 // toggle filterWidth
+				if( ~harp.drone.filterWidth < 1 ) { 
+					~harp.drone.filterWidth = 1 
+				} {
+					~harp.drone.filterWidth = 0.5
+				};
+			};
+		},
+		lower: { |value|
+			// toggle moddepth
+			if( value == 1 ) {	
+				if( ~harp.drone.moddepth < 1 ) { 
+					~harp.drone.moddepth = 1;
+				} {
+					~harp.drone.moddepth = 0;
+				};
+			};
+		}
 	),
 	(
 		name: \clicks,
@@ -149,13 +189,32 @@ format:
 							evt[ item.name ].end;
 						};
 					};			
+				},
+				\slider, {
+					if( item.autopower.notNil ) {
+						if( value > 0 ) {
+							if( evt[ item.name ].active != true ) {
+								evt[ item.name ].start;
+							};
+						} {
+							evt[ item.name ].end;
+						};
+					};	
 				}
 			);
 			if( shift ) { type = ("shift_" ++ type).asSymbol };
 			if( item[ type ].notNil ) {
 				switch( item[ type ].class,
 					Function, { item[ type ].value( value ) },
-					Symbol, { evt[ item.name ].mapCatchSet( item[ type ], value ); },
+					Symbol, { 
+						if( item[ type ] === \amp ) {
+							evt[ item.name ].mapSet( item[ type ], 
+								value.lincurve(0,1,0,1,2) 
+							); 
+						} {
+							evt[ item.name ].mapSet( item[ type ], value ); 
+						};
+					},
 				);
 			};
 		};
