@@ -123,6 +123,12 @@ format:
 		slider: \amp,
 		knob: \dev
 	),
+	(
+		name: \panfocus,
+		index: 0,
+		knob: \amount
+	),
+
 	]
 );
 
