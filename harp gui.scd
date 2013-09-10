@@ -118,7 +118,7 @@
 
 ~harp.makeWindow = { |evt, which, width = 230, columns = 3|
 	which = which ? evt.names;
-	evt.window = Window( "harp controls", Rect(440, 250,(width+14) * columns, 660) ).front;
+	evt.window = Window( "harp controls", Rect(440, 250,(width+14) * columns, 680) ).front;
 	evt.window.addFlowLayout;
 	evt.composite = EZCompositeView( evt.window, (width+8) @ evt.window.bounds.height );
 	evt.composite.addFlowLayout;
