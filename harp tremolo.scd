@@ -8,10 +8,13 @@
 
 [
 	\amp, 0.1, \amp.asSpec,
-	\avgTime, 10, [1, 30, \lin, 1 ].asSpec,
+	\avgTime, 1, [0.1, 30, \exp, 0 ].asSpec,
 	\filter, 0.5, [0,1].asSpec,
 	\transp, [-2, 9], [-24,24,\lin,1].asSpec.asRangeSpec,
 	\shiftAmt, 0, [0,400,\lin].asSpec,
+	\moddepth, 0, [0,1].asSpec,
+	\modspeed, 25, [1,300,2].asSpec,
+	\panSpeed, 0.1, [0,4].asSpec
 ].clump(3).do({ |item|
 	var key, default, spec;
 	#key, default, spec = item;
@@ -25,7 +28,7 @@
 
 (
 SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5, transp = #[-2,9],
-		shiftAmt = 0|
+		shiftAmt = 0, moddepth = 0, modspeed = 100, panSpeed = 0.1|
 	var trigger;
 	var sigs;
 	var bufs, n = 10;
@@ -50,10 +53,11 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 		LFDNoise3.kr(0.2.dup(sigs.size)).exprange( (1-filter).linexp(0,1,20,20000), 20000 ), 
 		3 
 	 );
+	sigs = sigs * (1 - LFDNoise3.kr(modspeed.dup(10), moddepth, moddepth )).max(0);
 	sigs = sigs.collect({ |sig|
-		RoundPan.ar( 2, sig, LFDNoise3.kr(0.05) * 2 );
+		RoundPan.ar( 4, sig, LFDNoise3.kr(panSpeed/2) * 2 );
 	}).sum;
-	Out.ar(0, sigs * amp * env );
+	Out.ar(0, sigs * amp * env * 0.5 );
 }).load(s);
 );
 
@@ -64,9 +68,12 @@ SynthDef( "harp_crawling_10", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5
 		\bufs, (evt.buffers.tremolo!2).flatten(1), 
 		\amp, evt.amp ? 0.1,
 		\filter, evt.filter ? 0.5,
-		\avgTine, evt.avgTime ? 10,
+		\avgTime, evt.avgTime ? 10,
 		\transp, evt.transp ? [-2, 9],
 		\shiftAmt, evt.shiftAmt ? 0,
+		\moddepth, evt.moddepth,
+		\modspeed, evt.modspeed,
+		\panSpeed, evt.panSpeed
 	] );
 	evt.active = true;
 };
