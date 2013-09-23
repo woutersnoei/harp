@@ -12,7 +12,7 @@
 	\ratio, 1, [0.25,4,\exp,0,1].asSpec,
 	\pan, 1, [0.25,1].asSpec,
 	\res, [0.01,0.1], [0.01,1,\exp].asSpec.asRangeSpec,
-	\durscale, 0.25, [0.25,1].asSpec,
+	\durscale, 0.125, [0.125,1,\exp].asSpec,
 	\range, [40,80], [40,100,\lin,1].asSpec.asRangeSpec
 ].clump(3).do({ |item|
 	var key, default, spec;
