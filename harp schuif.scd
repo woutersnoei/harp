@@ -5,7 +5,7 @@
 
 (
 SynthDef( "harp_schuif", { |bufnum = #[0,1], gate = 1,
-		amp = 0.1, transpAmt = 12, ratio = 1, pwidth = 0.25, modSpeed = 0.25,		time = #[ 3, 15 ],
+		amp = 0.1, transpAmt = 12, ratio = 1, pdir = 0.5, modSpeed = 0.25,		time = #[ 3, 15 ],
 		lowCut = #[ 200, 5000 ], 
 		hiCut = #[ 4000, 20000 ],
 		reso = 0|
@@ -34,7 +34,7 @@ SynthDef( "harp_schuif", { |bufnum = #[0,1], gate = 1,
 	PrivateOut.ar(4, (sig.sum / 2) * amp * env );
 	
 	sig = sig.collect({ |sig|
-		PanAz.ar( 4, sig, LFDNoise3.kr(modSpeed) * pwidth );
+		PanAz.ar( 4, sig, LFSaw.kr( pdir * LFDNoise3.kr(0.2).linexp(-1,1,0.5,2), Rand(0,2) ) );
 	}).sum;
 	
 	Out.ar(0, sig * amp * env );
@@ -48,7 +48,7 @@ SynthDef( "harp_schuif", { |bufnum = #[0,1], gate = 1,
 	'amp', 0.1, ControlSpec(0, 1, 'amp', 0, 0, ""), 
 	'transpAmt', 12, ControlSpec(0, 24, 'linear', 0.0, 0, ""), 
 	'ratio', 1, ControlSpec(0, 2, 'linear', 0.0, 0, ""), 
-	'pwidth', 0.25, ControlSpec(0.25, 1, 'linear', 0.0, 0.25, ""), 
+	'pdir', 0.05, ControlSpec(-0.1, 0.1, 'linear', 0.0, 0.0, ""), 
 	'modSpeed', 0.25, [0,5].asSpec, 
 	'time', [ 3, 15 ], RangeSpec(0.1, 25, 0, inf, 'exp', 0.0, [ 0.1, 0.1 ], ""), 
 	'lowCut', [ 200, 5000 ], RangeSpec(20, 20000, 0, inf, 'exp', 0.0, [ 440.0, 440.0 ], " Hz"), 
