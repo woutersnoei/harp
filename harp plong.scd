@@ -7,7 +7,7 @@
 ~harp.plong.specs = OEM();
 
 [
-	\amp, 0.1, \amp.asSpec, true,
+	\amp, 0.7, \amp.asSpec, true,
 	\reverse, false, BoolSpec(false), true,
 	\semitones,  [-24,0], [-24,24,\lin,1].asSpec.asRangeSpec, false,
 	\ringFreq,  [100,1000], [20,20000,\exp].asSpec.asRangeSpec, false,
@@ -46,29 +46,34 @@ SynthDef( "harp_plong", { |bufnum = 0, amp = 0.1, semitones = 0, ringFreq = 440,
 );
 
 ~harp.plong.start = { |evt|
-	evt.end;
-	{
-		evt.synths = [0,0.5,1,-0.5].scramble.collect({ |item|
-			var synth;
-			synth = Synth( "harp_plong", [ 
-				\bufnum, evt.buffers.plong.choose, 
-				\semitones, evt.semitones[0] rrand: evt.semitones[1], 
-				\ringFreq, evt.ringFreq[0] exprand: evt.ringFreq[1], 
-				\noise, evt.noise,
-				\pan, item,
-				\amp, evt.amp,
-				\reverse, evt.reverse,
-			]  );
-			evt.waitTime.rand.wait;
-			synth
-		});
-	}.fork;
+	if( evt.task.isPlaying.not ) {	
+		evt.end;
+		evt.task = {
+			[0,0.5,1,-0.5].scramble.collect({ |item|
+				evt.synths = evt.synths.add(
+					Synth( "harp_plong", [ 
+						\bufnum, evt.buffers.plong.choose, 
+						\semitones, evt.semitones[0] rrand: evt.semitones[1], 
+						\ringFreq, evt.ringFreq[0] exprand: evt.ringFreq[1], 
+						\noise, evt.noise,
+						\pan, item,
+						\amp, evt.amp,
+						\reverse, evt.reverse,
+					]  ).freeAction_({ |sn| 
+						evt.synths.remove( sn );
+						if( evt.synths.size == 0 ) { evt.active = false };
+					})
+				);
+				evt.active = true;
+				evt.waitTime.rand.wait;
+			});
+		}.fork;
+	};
 	evt.active = true;
 };
 
 ~harp.plong.end = { |evt|
 	evt.synths.do(_.release);
-	evt.synths = nil;
 	evt.active = false;
 };
 

@@ -64,7 +64,23 @@ format:
 		name: \plong,
 		index: 0,
 		power: true,
-		slider: \amp
+		slider: { |value|
+			var lastVal;
+			lastVal = ~harp.plong.lastVal ? 0;
+			~harp.plong.lastVal = value;
+			~harp.plong.semitones = 
+				~harp.plong.semitones.put(1, value.linlin(0,1,-12,24).round(1) );
+			if( value >= (lastVal + 0.025) ) {
+				~harp.plong.reverse = false;
+			};
+			if( value <= (lastVal - 0.025) ) {
+				~harp.plong.reverse = true;
+			};
+			if( (value >= (lastVal + 0.1))  or: (value <= (lastVal - 0.1)) ) {
+				~harp.plong.start;
+			};
+			
+		}
 	),
 	(
 		name: \hamel,
