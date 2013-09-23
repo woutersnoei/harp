@@ -85,7 +85,7 @@ format:
 	(
 		name: \hamel,
 		index: 1,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		shift_slider: \shiftAmt,
 		knob: \filter
@@ -93,7 +93,7 @@ format:
 	(
 		name: \schuif,
 		index: 2,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		knob: \ratio
 	),
@@ -154,28 +154,28 @@ format:
 	(
 		name: \clicks,
 		index: 5,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		knob: \ratio
 	),
 	(
 		name: \live_squeek,
 		index: 6,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		knob: \lag
 	),
 	(
 		name: \live_echos,
 		index: 7,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		knob: \maxShift
 	),
 	(
 		name: \live_holdpeak,
 		index: 8,
-		power: true,
+		autopower: true,
 		slider: \amp,
 		knob: \dev
 	),
