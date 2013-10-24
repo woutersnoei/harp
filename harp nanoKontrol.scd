@@ -88,14 +88,46 @@ format:
 		autopower: true,
 		slider: \amp,
 		shift_slider: \shiftAmt,
-		knob: \filter
+		knob: \filter,
+		upper: { |value|
+			// inc. transp
+			var transp;
+			transp = ~harp.hamel.transp.abs.sum;
+			if( value == 1 ) {	
+				case { transp < 24 } {
+					~harp.hamel.transp = [-12,12];
+				} { transp < 48 } {
+					~harp.hamel.transp = [-24,24];
+				} {
+					~harp.hamel.transp = [0,0];
+				};
+			};
+		},
+		lower: { |value|
+			// dec. reso
+			if( value == 1 ) {	
+				~harp.hamel.shiftAmt = (~harp.hamel.shiftAmt + 400).fold(0,400);
+			};
+		}
 	),
 	(
 		name: \schuif,
 		index: 2,
 		autopower: true,
 		slider: \amp,
-		knob: \ratio
+		knob: \ratio,
+		upper: { |value|
+			// inc. reso
+			if( value == 1 ) {	
+				~harp.schuif.reso = (~harp.schuif.reso + 0.1).min(1);
+			};
+		},
+		lower: { |value|
+			// dec. reso
+			if( value == 1 ) {	
+				~harp.schuif.reso = (~harp.schuif.reso - 0.1).max(0);
+			};
+		}
 	),
 	(
 		name: \fast_fx,
