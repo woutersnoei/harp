@@ -41,7 +41,7 @@ SynthDef( "harp_crawling_2", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5,
 				TWChoose.kr( trigger, [-1,1],[0.1,0.9] )
 			),
 		startPos: Rand(0, BufFrames.kr(bufs)), loop: true );
-	sigs = FreqShift.ar( sigs, LFDNoise3.kr(0.026.dup( n )) * shiftAmt );
+	sigs = FreqShift.ar( sigs, LFDNoise3.kr(0.026.dup( n )) * shiftAmt.varlag(5) );
 	sigs = BLowCut.ar(sigs, 
 		LFDNoise3.kr(0.2.dup(sigs.size)).exprange( 20, filter.linexp(0,1,20,20000) ), 
 		3 
