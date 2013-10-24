@@ -19,6 +19,7 @@
 	\semitones, 0, [-12,12,\lin,1].asSpec,
 	\catch2, false, BoolSpec(false), 
 	\semitones2, 0, [-12,12,\lin,1].asSpec,
+	\amp2, 1.0, \amp.asSpec,
 	\duration, 2, [0.5,4,\lin].asSpec,
 	\amp, 0.0, \amp.asSpec,
 	\pwidth, 0.25, [0.25, 1].asSpec,
@@ -74,7 +75,7 @@
 
 (
 SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, gate = 1,
-		recBuf = 0, semitones = 0, loopBuf = 0, semitones2 = 0, catch2 = 0, loopBuf2 = 0, t_getPos = 0, level = 1|
+		recBuf = 0, semitones = 0, loopBuf = 0, semitones2 = 0, catch2 = 0, loopBuf2 = 0, amp2 = 1, t_getPos = 0, level = 1|
 		var sig, playLoop, playLoop2;
 		var env;
 		
@@ -94,7 +95,7 @@ SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, ga
 		
 		playLoop2 = PlayBufCF.ar( 1, loopBuf2, semitones2.midiratio, 
 			Dwhite(0.5,2), Dwhite(0,BufFrames.kr( loopBuf2 )), 1, 0.25 
-		);
+		) * amp2.lag(0.5);
 		
 		catch2 = Slew.kr( Slew.kr( catch2, 1/0.25, inf ) > 0.9999, 1/0.25, 1/0.25 );
 		
