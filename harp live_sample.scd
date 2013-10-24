@@ -67,7 +67,7 @@
 	evt.loopBuf2 = Buffer.alloc( s, evt.duration * 44100, 1, {|buf|["/b_query",buf.bufnum]} );
 	evt.sn.set( \loopBuf2, evt.loopBuf2 );
 	evt.loopBuf2.doOnInfo_({
-		evt.recBuf.copyLoopCF( evt.loopBuf, value - ((evt.duration + 0.125) * 44100), 0.125, 
+		evt.recBuf.copyLoopCF( evt.loopBuf2, value - ((evt.duration + 0.125) * 44100), 0.125, 
 		-1, { "copied loop 2".postln });
 	});
 };
@@ -92,7 +92,7 @@ SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, ga
 		
 		catch = Slew.kr( Slew.kr( catch, 1/0.25, inf ) > 0.9999, 1/0.25, 1/0.25 ).linlin(0,1,-1,1);
 		
-		playLoop2 = PlayBufCF.ar( 1, loopBuf2, semitones2, 
+		playLoop2 = PlayBufCF.ar( 1, loopBuf2, semitones2.midiratio, 
 			Dwhite(0.5,2), Dwhite(0,BufFrames.kr( loopBuf2 )), 1, 0.25 
 		);
 		
@@ -112,7 +112,7 @@ SynthDef( "harp_live_sample", { |in = 0, amp = 0.0, pwidth = 0.25, catch = 0, ga
 ~harp.live_sample.start = { |evt|
 	evt.end;
 	evt.sn = Synth( "harp_live_sample", 
-		evt.getPairs( evt.controlNames ++ [ \recBuf, \catchBuf ]), 
+		evt.getPairs( evt.controlNames ++ [ \recBuf, \catchBuf, \loopBuf, \loopBuf2 ]), 
 		s, \addToHead 
 	).register;
 	ReceiveTrig( evt.sn, { |value, time, responder, msg|
