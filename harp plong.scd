@@ -49,6 +49,16 @@ SynthDef( "harp_plong", { |bufnum = 0, amp = 0.1, semitones = 0, ringFreq = 440,
 	if( evt.task.isPlaying.not ) {	
 		evt.end;
 		evt.task = {
+			~harp.drone.stretch = [0.5,1,2].wchoose([0.25,0.5,0.25]);
+			~harp.drone.stretchDev = [0,1].choose;
+			~harp.drone.ratio = [0.5,1,2].wchoose([0.25,0.5,0.25]);
+			~harp.drone.filterWidth = [0.5,1].choose;
+			~harp.drone.moddepth = [0,1].choose;
+			~harp.fast_fx.stretch = [0.5,1,2].wchoose([0.25,0.5,0.25]);
+			~harp.fast_fx.stretchDev = [0,1].choose;
+			~harp.fast_fx.ratio = [0.5,1,2].wchoose([0.25,0.5,0.25]);
+			~harp.fast_fx.filterWidth = [0.5,1].choose;
+			~harp.fast_fx.moddepth = [0,1].choose;
 			[0,0.5,1,-0.5].scramble.collect({ |item|
 				evt.synths = evt.synths.add(
 					Synth( "harp_plong", [ 
@@ -75,6 +85,18 @@ SynthDef( "harp_plong", { |bufnum = 0, amp = 0.1, semitones = 0, ringFreq = 440,
 ~harp.plong.end = { |evt|
 	evt.synths.do(_.release);
 	evt.active = false;
+	evt.task.stop;
+	~harp.drone.stretch = 1;
+	~harp.drone.stretchDev = 0;
+	~harp.drone.ratio = 1;
+	~harp.drone.filterWidth = 0.5;
+	~harp.drone.moddepth = 0;
+	~harp.fast_fx.stretch = 1;
+	~harp.fast_fx.stretchDev = 0;
+	~harp.fast_fx.ratio = 1;
+	~harp.fast_fx.filterWidth = 0.5;
+	~harp.fast_fx.moddepth = 0;
+	
 };
 
 /*
