@@ -32,6 +32,7 @@
 (
 SynthDef( "harp_drone", { |bufnum = 0, amp = 0.1, ratio = 1, fullness = 1, filter = 0.5, filterWidth = 1, moddepth = 0, stretch = 1, stretchDev = 0, modspeed = 100, gate = 1|
 	var sig;
+	stretch = stretch.ratiomidi.varlag(2).midiratio;
 	sig = 2.collect({
 		var trig;
 		trig = TDuty.ar( Dwhite(4,7) );
@@ -42,12 +43,11 @@ SynthDef( "harp_drone", { |bufnum = 0, amp = 0.1, ratio = 1, fullness = 1, filte
 		) * [ 1, fullness ].stutter
 	});
 	sig = sig[0] + sig[1].rotate(2);
-	sig = sig * (1 - LFDNoise3.kr(modspeed.dup(4), moddepth, moddepth )).max(0);
+	sig = sig * (1 - LFDNoise3.kr(modspeed.dup(4), moddepth, moddepth )).max(0);	sig = PitchShift.ar( sig, 0.2, stretch, 0, stretchDev * 0.2);
 	filter = LPFLag.kr(filter,0.25);
 	filterWidth = LPFLag.kr(filterWidth,0.25);	
 	sig = BLowCut.ar( sig, filter.linexp( filterWidth.linlin(0, 1, 0, 0.5 ), 1, 20, 20000 ));
 	sig = BHiCut.ar( sig, filter.linexp( 0, filterWidth.linlin(0, 1, 1, 0.5), 20, 20000 ));
-	sig = PitchShift.ar( sig, 0.2, stretch, 0, stretchDev * 0.2);
 	sig = sig * amp.lag(0.5) * Env.cutoff.kr(2,gate);
 	PrivateOut.ar(4, sig.sum / 4 );
 	Out.ar( 0, sig );
