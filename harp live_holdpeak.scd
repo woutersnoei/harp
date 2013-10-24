@@ -9,7 +9,7 @@
 ~harp.live_holdpeak.controlNames = [];
 
 [
-	\in, 2, [0,4,\lin,1].asSpec,
+	\in, 2, ListSpec([1,2,3,4],1,['small_harp', 'large_harp', 'live_sample', 'aux'] ),
 	\amp, 0.1, \amp.asSpec,
 	\dev, 1, [0,1].asSpec,
 	\down, 0, [ 0, 0.75 ].asSpec,

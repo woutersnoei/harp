@@ -14,7 +14,7 @@
 ~harp.live_sample.makeBuffer;
 
 [
-	\in, 2, [0,2,\lin,1].asSpec,
+	\in, 2, ListSpec([1,2,4],1,['small_harp', 'large_harp', 'aux'] ),
 	\catch, false, BoolSpec(false), 
 	\semitones, 0, [-12,12,\lin,1].asSpec,
 	\catch2, false, BoolSpec(false), 

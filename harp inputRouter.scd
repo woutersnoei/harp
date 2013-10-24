@@ -1,5 +1,5 @@
 ~harp = ~harp ? EM();
 
-~harp.inputRouter = InputRouter.unique( s, "harp", [ \harp1, \harp2, \harp3 ] );
+~harp.inputRouter = InputRouter.unique( s, "harp", [ \silent, \small_harp, \large_harp ] );
 
 ~harp.inputRouter.gui;
