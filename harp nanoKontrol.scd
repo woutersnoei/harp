@@ -288,6 +288,16 @@ format:
 			evt.apply( i, \lower, sl.value, NanoKONTROL.buttons[0][23].value == 1 );
 		};
 	});
+	NanoKONTROL.buttons[scene][18].action = { |bt| // bwd
+		if( bt.value == 1 ) {
+			~harp.scenes.scene = (~harp.scenes.scene - 1).max(0);
+		};
+	};
+	NanoKONTROL.buttons[scene][20].action = { |bt| // fwd
+		if( bt.value == 1 ) {
+			~harp.scenes.scene = (~harp.scenes.scene + 1).min(6);
+		};
+	};
 };
 
 ~harp.nanoKONTROL.fillGUI = { |evt|
