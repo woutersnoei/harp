@@ -209,7 +209,27 @@ format:
 		index: 8,
 		autopower: true,
 		slider: \amp,
-		knob: \dev
+		knob: \dev,
+		upper: { |value|
+			if( value == 1 ) {
+				 // catch on
+				 if( ~harp.live_sample.catch == true	) {
+					~harp.live_sample.catch2 = true;	
+				 } {
+					 ~harp.live_sample.catch = true;	
+				 };
+			};
+		},
+		lower: { |value|
+			if( value == 1 ) {
+				 // catch off
+				 if( ~harp.live_sample.catch2 == true	) {
+					~harp.live_sample.catch2 = false;	
+				 } {
+					 ~harp.live_sample.catch = false;
+				 };	
+			};
+		},
 	),
 	(
 		name: \panfocus,
