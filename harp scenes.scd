@@ -30,6 +30,8 @@
 			editor.scoreView.addtoScoreList( UScore.current[i] );
 			UScore.current.events.do(_.stop);
 			UScore.current.events.do(_.pos_(0));
+			editor.window.front;
+			{ editor.scoreView.scoreView.view.focus; }.defer(0.1);
 		};
 	}.defer(0.2);
 };
@@ -87,7 +89,7 @@
 
 ~harp.scenes.scene_ = { |evt, i = 0|
 	evt[ \scene ] = i;
-	evt.scenes[ i ].value;
+	{ evt.scenes[ i ].value; }.defer;
 };
 
 /*
