@@ -27,6 +27,18 @@
 	};
 };
 
+(
+~harp.midiOut = MIDIOut(0, 
+	MIDIClient.destinations.detect({ |item| 
+		item.device.find( "face" ).notNil 
+	}) !? _.uid ? 0
+).latency_(0.1);
+);
+
+/*
+~harp.midiOut.noteOn( 0, 65, 64 ); 
+*/
+
 /*
 format:
 
@@ -316,6 +328,16 @@ format:
 	NanoKONTROL.buttons[scene][20].action = { |bt| // fwd
 		if( bt.value == 1 ) {
 			~harp.scenes.scene = (~harp.scenes.scene + 1).min(6);
+		};
+	};
+	NanoKONTROL.buttons[scene][23].action = { |bt| // next light cue
+		if( bt.value == 1 ) {
+			~harp.midiOut.noteOn( 0, 65, 64 ); 
+		};
+	};
+	NanoKONTROL.buttons[scene][21].action = { |bt| // prev light cue
+		if( bt.value == 1 ) {
+			~harp.midiOut.noteOn( 0, 67, 64 ); 
 		};
 	};
 };
