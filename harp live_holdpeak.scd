@@ -14,7 +14,7 @@
 	\dev, 1, [0,1].asSpec,
 	\down, 0, [ 0, 0.75 ].asSpec,
 	\winsize, 0.5, [0.01,0.5,\exp].asSpec,
-	\thresh, -10, [-inf, 0, \db].asSpec,
+	\thresh, -35, [-inf, 0, \db].asSpec,
 ].clump(3).do({ |item|
 	var key, default, spec;
 	#key, default, spec = item;
