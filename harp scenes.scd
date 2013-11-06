@@ -36,17 +36,21 @@
 	}.defer(0.2);
 };
 
+/*
+~harp.scenes.goToScore
+*/
+
 (
 ~harp.scenes.scenes = [
-	{ // 0
-		~harp.scenes.goToScore(6); // flagio
+	{ // 0 // nothing
+		~harp.scenes.goToScore(); // main
 	},
 	{ // 1
-		~harp.scenes.goToScore(4); // koolmees fx
+		~harp.scenes.goToScore(6); // flagio
 		~harp.live_squeek.in = 3;
 		~harp.live_echos.in = 3;
 		~harp.live_holdpeak.in = 3;
-		~harp.live_sample.in = 1;
+		~harp.live_sample.in = 2;
 	},
 	{ // 2
 		~harp.scenes.goToScore(2); // slauerhoff
@@ -67,6 +71,7 @@
 	{ // 5
 		~harp.scenes.goToScore(); // main
 		~harp.live_echos.in = 2;
+		~harp.schuif.reso = 0;
 	},
 	{ // 6
 		{
