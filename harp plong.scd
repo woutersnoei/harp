@@ -8,7 +8,7 @@
 
 [
 	\amp, 0.5, \amp.asSpec, true,
-	\reverse, false, BoolSpec(false), true,
+	\reverse, true, BoolSpec(false), true,
 	\semitones,  [-24,0], [-24,24,\lin,1].asSpec.asRangeSpec, false,
 	\ringFreq,  [100,1000], [20,20000,\exp].asSpec.asRangeSpec, false,
 	\noise, 0, \amp.asSpec, true,

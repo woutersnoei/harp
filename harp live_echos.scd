@@ -10,7 +10,7 @@
 [
 	\in, 2, ListSpec([1,2,3,4],1,['small_harp', 'large_harp', 'live_sample', 'aux'] ),
 	\amp, 0.1, \amp.asSpec,
-	\pwidth, 0.25, [0.25, 1].asSpec, 
+	\pwidth, 1, [0.25, 1].asSpec, 
 	\maxShift, 10, [1,1000,\exp].asSpec,
 	\speed, 1, [0.1,10,\exp].asSpec,
 	// \fb, 0, [0,0.99,\lin].asSpec,
