@@ -66,7 +66,7 @@
 		~harp.scenes.goToScore(3); // hamel minispeaker
 		~harp.hamel.transp = [0,0];
 		~harp.hamel.shiftAmt = 0;
-		~harp.live_sample.in = 4;
+		~harp.live_sample.in = 2;
 	},
 	{ // 5
 		~harp.scenes.goToScore(); // main
@@ -75,7 +75,7 @@
 	},
 	{ // 6
 		{
-			var startAmp, spec, time = 2, res = 10;
+			var startAmp, spec, time = 8, res = 10;
 			spec = \amp.asSpec;
 			startAmp = spec.unmap( ~harp.schuif.amp );
 			(time * res).do({ |i|
