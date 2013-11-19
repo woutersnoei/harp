@@ -12,6 +12,7 @@
 	\filter, 0.5, [0,1].asSpec,
 	\transp, [0, 0], [-24,24,\lin,1].asSpec.asRangeSpec,
 	\shiftAmt, 0, [0,400,\lin].asSpec,
+	\mod, 0, [0,1].asSpec,
 ].clump(3).do({ |item|
 	var key, default, spec;
 	#key, default, spec = item;
@@ -25,11 +26,12 @@
 
 (
 SynthDef( "harp_crawling_2", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5, transp = #[-2,9],
-		shiftAmt = 0|
+		shiftAmt = 0, mod = 0|
 	var trigger;
 	var sigs;
 	var bufs, n = 2;
 	var env;
+	var modsig;
 	bufs = \bufs.kr(0!n);
 	env = Env.asr(0.2,1,0.2).kr(2, gate);
 	filter = filter.lag(1);
@@ -41,6 +43,17 @@ SynthDef( "harp_crawling_2", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5,
 				TWChoose.kr( trigger, [-1,1],[0.1,0.9] )
 			),
 		startPos: Rand(0, BufFrames.kr(bufs)), loop: true );
+	
+	modsig = sigs.collect({ |sig|
+		BBandPass.ar(
+			PinkNoise.ar( Amplitude.ar( sig, 0.0001, 0.001 ) * 10 ),
+			(TIRand.kr( transp[0].dup, transp[1], trigger ).midiratio * [880, 1760]).lag(1),
+			0.01
+		).sum
+	});
+	
+	sigs = (sigs * (1-mod)) + (modsig * mod);
+	
 	sigs = FreqShift.ar( sigs, LFDNoise3.kr(0.026.dup( n )) * shiftAmt.varlag(5) );
 	sigs = BLowCut.ar(sigs, 
 		LFDNoise3.kr(0.2.dup(sigs.size)).exprange( 20, filter.linexp(0,1,20,20000) ), 
@@ -70,6 +83,7 @@ SynthDef( "harp_crawling_2", { |amp = 0.1, gate = 1, avgTime = 10, filter = 0.5,
 		\avgTine, evt.avgTime ? 10,
 		\transp, evt.transp ? [-2, 9],
 		\shiftAmt, evt.shiftAmt ? 0,
+		\mod, evt.mod ? 0
 	] );
 	evt.active = true;
 };
